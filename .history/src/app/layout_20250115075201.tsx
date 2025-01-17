@@ -1,0 +1,37 @@
+import "./globals.css";
+import { EnvProvider } from "./components/EnvProvider";
+
+export const metadata = {
+  title: "Suno AI Lyric Generator",
+  description: "Generate song lyrics using AI",
+};
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  // Pass environment variables to client components
+  const env = {
+    NEXT_PUBLIC_OPENROUTER_API_KEY:
+      process.env.NEXT_PUBLIC_OPENROUTER_API_KEY || "",
+    NEXT_PUBLIC_OPENAI_API_KEY: process.env.NEXT_PUBLIC_OPENAI_API_KEY || "",
+  };
+
+  // Create a script that will run before React hydration
+  const envScript = `
+    window.ENV = ${JSON.stringify(env)};
+    console.log('Environment variables loaded:', window.ENV);
+  `;
+
+  return (
+    <html lang="en">
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: envScript }} />
+      </head>
+      <body>
+        <EnvProvider env={env}>{children}</EnvProvider>
+      </body>
+    </html>
+  );
+}
