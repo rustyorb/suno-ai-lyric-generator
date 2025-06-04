@@ -35,6 +35,9 @@ export default function Home() {
   } = useAIProviders();
 
   const [theme, setTheme] = useState("");
+  const [mood, setMood] = useState("Gritty");
+  const [rhymeDensity, setRhymeDensity] = useState(5);
+  const [profanityLevel, setProfanityLevel] = useState(5);
   const [generatedLyrics, setGeneratedLyrics] = useState("");
   const [isGenerating, setIsGenerating] = useState(false);
   const [error, setError] = useState("");
@@ -169,9 +172,7 @@ export default function Home() {
           {
             role: "user",
             content:
-              'Generate complete song lyrics about "' +
-              theme +
-              '". Follow all formatting rules, structure requirements, and advanced techniques defined in the system prompt. Pay close attention to your flow and rhyme scheme. Make sure syllable counts are accurate. ',
+              `Generate complete song lyrics about "${theme}" in a ${mood.toLowerCase()} mood. Use a rhyme density of ${rhymeDensity}/10 and a profanity level of ${profanityLevel}/10. Follow all formatting rules, structure requirements, and advanced techniques defined in the system prompt. Pay close attention to your flow and rhyme scheme. Make sure syllable counts are accurate. `,
           },
         ],
         temperature: 0.85,
@@ -410,6 +411,50 @@ export default function Home() {
             placeholder="Enter lyric theme (e.g., street life, love, struggle)"
             className="w-full p-3 bg-gray-700 text-white rounded-md mb-4 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-purple-500"
           />
+
+          <div className="grid grid-cols-1 gap-4 mb-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-300 mb-1">
+                Mood
+              </label>
+              <select
+                value={mood}
+                onChange={(e) => setMood(e.target.value)}
+                className="w-full bg-gray-700 text-white p-2 rounded"
+              >
+                <option value="Gritty">Gritty</option>
+                <option value="Reflective">Reflective</option>
+                <option value="Energetic">Energetic</option>
+                <option value="Smooth">Smooth</option>
+              </select>
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-300 mb-1">
+                Rhyme Density: {rhymeDensity}
+              </label>
+              <input
+                type="range"
+                min="1"
+                max="10"
+                value={rhymeDensity}
+                onChange={(e) => setRhymeDensity(Number(e.target.value))}
+                className="w-full"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-300 mb-1">
+                Profanity Level: {profanityLevel}
+              </label>
+              <input
+                type="range"
+                min="0"
+                max="10"
+                value={profanityLevel}
+                onChange={(e) => setProfanityLevel(Number(e.target.value))}
+                className="w-full"
+              />
+            </div>
+          </div>
 
           <button
             onClick={generateLyrics}
