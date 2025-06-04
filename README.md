@@ -28,6 +28,7 @@ A multi-AI powered lyric generation platform supporting OpenAI, Anthropic, and O
    ```bash
    npm run dev
    ```
+   The application will be available at `http://localhost:3002`.
 
 ## Configuration
 - Add providers in the UI
