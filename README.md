@@ -9,6 +9,9 @@ A multi-AI powered lyric generation platform supporting OpenAI, Anthropic, and O
 - Secure API key management
 - Genre-based lyric templates
 - Responsive UI
+- Lyric draft library for saving ideas
+- Artist persona templates
+- Built-in rhyme & cadence analyzer
 
 ## Prerequisites
 - Node.js 16+

@@ -4,6 +4,8 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { useAIProviders, getEnvVar } from "./providers";
 import ProviderManager from "./components/ProviderManager";
+import DraftLibrary from "./components/DraftLibrary";
+import RhymeAnalyzer from "./components/RhymeAnalyzer";
 
 // Load last used provider and model from localStorage
 const loadLastUsed = () => {
@@ -38,6 +40,14 @@ export default function Home() {
   const [mood, setMood] = useState("Gritty");
   const [rhymeDensity, setRhymeDensity] = useState(5);
   const [profanityLevel, setProfanityLevel] = useState(5);
+  const PERSONA_TEMPLATES: Record<string, string> = {
+    None: "",
+    "Old-school Rapper":
+      "Use a classic, old-school hip-hop style with storytelling elements.",
+    "Trap Artist": "Use modern trap slang and rhythm patterns.",
+    "Storytelling Poet": "Adopt a poetic narrative style with vivid imagery.",
+  };
+  const [persona, setPersona] = useState<string>("None");
   const [generatedLyrics, setGeneratedLyrics] = useState("");
   const [isGenerating, setIsGenerating] = useState(false);
   const [error, setError] = useState("");
@@ -94,7 +104,7 @@ export default function Home() {
         messages: [
           {
             role: "system",
-            content: `You are a master lyricist and poet specializing in hip-hop and rap. Generate intricate, creative, and original song lyrics based on the provided prompt. Ensure the lyrics adhere to the following structured format and incorporate advanced technical elements and rhyme styles for maximum artistic quality. Pay special attention to creating a dynamic flow with varied cadences, syncopation, and rhythmic patterns suitable for hip-hop.
+            content: `You are a master lyricist and poet specializing in hip-hop and rap. ${PERSONA_TEMPLATES[persona]} Generate intricate, creative, and original song lyrics based on the provided prompt. Ensure the lyrics adhere to the following structured format and incorporate advanced technical elements and rhyme styles for maximum artistic quality. Pay special attention to creating a dynamic flow with varied cadences, syncopation, and rhythmic patterns suitable for hip-hop.
 
 ### Structure
 1. **Section Tags**: Use [Section] tags such as [Intro], [Verse], [Chorus], [Pre-Chorus], [Bridge], [Outro], etc. Each section tag must appear exactly once, ensuring a clear and logical song structure.
@@ -432,6 +442,22 @@ export default function Home() {
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-300 mb-1">
+                Persona
+              </label>
+              <select
+                value={persona}
+                onChange={(e) => setPersona(e.target.value)}
+                className="w-full bg-gray-700 text-white p-2 rounded"
+              >
+                {Object.keys(PERSONA_TEMPLATES).map((key) => (
+                  <option key={key} value={key}>
+                    {key}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-300 mb-1">
                 Rhyme Density: {rhymeDensity}
               </label>
               <input
@@ -485,8 +511,13 @@ export default function Home() {
               <pre className="whitespace-pre-wrap text-gray-300">
                 {generatedLyrics}
               </pre>
+              <RhymeAnalyzer lyrics={generatedLyrics} />
             </div>
           )}
+          <DraftLibrary
+            currentLyrics={generatedLyrics}
+            onSelectDraft={(d) => setGeneratedLyrics(d.content)}
+          />
         </div>
 
         <div>
