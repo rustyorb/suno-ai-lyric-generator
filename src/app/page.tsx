@@ -42,23 +42,25 @@ export default function Home() {
 
   // Load last used configuration on mount
   useEffect(() => {
-    const lastUsed = loadLastUsed();
-    if (lastUsed) {
-      const provider = providers.find((p) => p.name === lastUsed.provider.name);
-      if (provider) {
-        setSelectedProvider(provider);
-        fetchModels(provider).then(() => {
+    const init = async () => {
+      const lastUsed = loadLastUsed();
+      if (lastUsed) {
+        const provider = providers.find(
+          (p) => p.name === lastUsed.provider.name
+        );
+        if (provider) {
+          setSelectedProvider(provider);
+          const models = await fetchModels(provider);
           if (lastUsed.model) {
-            const model = availableModels.find(
-              (m) => m.id === lastUsed.model.id
-            );
+            const model = models.find((m) => m.id === lastUsed.model.id);
             if (model) {
               setSelectedModel(model);
             }
           }
-        });
+        }
       }
-    }
+    };
+    init();
   }, [providers]); // Only run on mount and when providers change
 
   const generateLyrics = async () => {

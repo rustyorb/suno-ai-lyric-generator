@@ -74,7 +74,7 @@ interface UseAIProvidersReturn {
   setSelectedModel: (model: AIModel | null) => void;
   addProvider: (provider: AIProvider) => void;
   removeProvider: (providerName: string) => void;
-  fetchModels: (provider: AIProvider) => Promise<void>;
+  fetchModels: (provider: AIProvider) => Promise<AIModel[]>;
 }
 
 export function useAIProviders(): UseAIProvidersReturn {
@@ -121,15 +121,15 @@ export function useAIProviders(): UseAIProvidersReturn {
     return true;
   };
 
-  const fetchModels = async (provider: AIProvider): Promise<void> => {
+  const fetchModels = async (provider: AIProvider): Promise<AIModel[]> => {
     if (!validateApiKey(provider)) {
-      return;
+      return [];
     }
 
     if (!provider.modelsEndpoint) {
       setModelError("No models endpoint defined for this provider");
       setAvailableModels([]);
-      return;
+      return [];
     }
 
     setIsLoadingModels(true);
@@ -203,12 +203,14 @@ export function useAIProviders(): UseAIProvidersReturn {
 
       setAvailableModels(filteredModels);
       setSelectedModel(null);
+      return filteredModels;
     } catch (error) {
       console.error("Error fetching models:", error);
       const errorMessage =
         error instanceof Error ? error.message : "Unknown error occurred";
       setModelError(`Failed to fetch models: ${errorMessage}`);
       setAvailableModels([]);
+      return [];
     } finally {
       setIsLoadingModels(false);
     }
