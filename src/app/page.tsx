@@ -164,7 +164,7 @@ export default function Home() {
 3. Keep the lyrics modular so they can easily adapt to different musical arrangements or beats.
 5. **Stress Patterns**: Highlight stressed syllables to guide delivery and maintain rhythm. Example: "I'm the ARCHITECT of CHAOS"
 
- **NOTE**: ALL [VERSES] ARE 16 BARS LONG. [CHORUS] IS 8 OR 16 BARS LONG. [PRE-CHORUS] IS 4 BARS LONG.BRIDGE] IS 8 BARS LONG. [INTRO] IS 4 OR 6 LINES, SPOKEN, NARRATIVE, OR STORYTELLING STYLE.`,
+ **NOTE**: ALL [VERSES] ARE 16 BARS LONG. [CHORUS] IS 8 OR 16 BARS LONG. [PRE-CHORUS] IS 4 BARS LONG. [BRIDGE] IS 8 BARS LONG. [INTRO] IS 4 OR 6 LINES, SPOKEN, NARRATIVE, OR STORYTELLING STYLE.`,
           },
           {
             role: "user",
